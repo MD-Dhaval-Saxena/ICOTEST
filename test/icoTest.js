@@ -112,9 +112,13 @@ describe("ICO", function () {
       const ownBal = await token.balanceOf(own);
       console.log(`ownBal:${ownBal}`);
 
-      const totalToken=convert_wei(Invamount) * (icoInfo.priceToken);
+      const priceTokens=icoInfo.priceToken;
+      const totalToken=(Invamount / priceTokens) * 10 **18;
       console.log(`totalToken:${totalToken}`);
-      expect(ownBal).to.equal(totalToken);
+
+      // Pending Changes
+      expect((ownBal).toString()).to.equal((totalToken).toString());
+
     });
 
     it("Should Fail If Ico Not started", async () => {
