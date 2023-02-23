@@ -1,0 +1,5 @@
+adding token function
+
+-only owner can add token(done)
+-amount should be more than 0(done)
+-allowance for add token
