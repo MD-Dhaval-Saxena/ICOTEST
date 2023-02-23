@@ -93,7 +93,7 @@ describe("ICO", function () {
   // Invest()
   describe("Test to check if the invest function works as expected", () => {
     beforeEach(async () => {
-      await ico.addToken(wei_convert(500));
+      await ico.addToken(wei_convert(100));
     });
 
     it("Should Invest Some ether and Receive Tokens", async () => {
@@ -101,7 +101,7 @@ describe("ICO", function () {
       const tokeninvest = await ico.connect(addr1).Invest({ value: wei_convert(0.1) });
       const CurrBalance= await token.balanceOf(ico.address);
 
-      expect(CurrBalance).to.equal(wei_convert(490));
+      expect(CurrBalance).to.equal(wei_convert(90));
 
     });
   });
