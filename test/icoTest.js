@@ -76,7 +76,7 @@ describe("ICO", function () {
       expect(allowance).to.equal(wei_convert(10000));
     });
 
-    it("should allow adding tokens to the ICO", async () => {
+    it("Should allow adding tokens to the ICO", async () => {
       // checking balance
       const initialBal = await token.balanceOf(ico.address);
       const amount = ethers.utils.parseEther("0");
@@ -92,17 +92,45 @@ describe("ICO", function () {
 
   // Invest()
   describe("Test to check if the invest function works as expected", () => {
+    let CurrBalance, Invamount;
     beforeEach(async () => {
       await ico.addToken(wei_convert(100));
+      Invamount = wei_convert(0.1);
+      console.log(`Invamount:${Invamount}`);
+      const tokeninvest = await ico.connect(addr1).Invest({ value: Invamount });
+      CurrBalance = await token.balanceOf(ico.address);
     });
 
-    it("Should Invest Some ether and Receive Tokens", async () => {
-      const initialBal= await token.balanceOf(ico.address);
-      const tokeninvest = await ico.connect(addr1).Invest({ value: wei_convert(0.1) });
-      const CurrBalance= await token.balanceOf(ico.address);
-
+    it("Should Invest Some ether and Check Receive Tokens", async () => {
       expect(CurrBalance).to.equal(wei_convert(90));
-
     });
+    it("Should receive the tokens", async () => {
+      // Checking the token are received by Investor
+      const icoInfo = await ico.getICOinfo();
+
+      const own = await addr1.address;
+      const ownBal = await token.balanceOf(own);
+      console.log(`ownBal:${ownBal}`);
+
+      const totalToken=convert_wei(Invamount) * (icoInfo.priceToken);
+      console.log(`totalToken:${totalToken}`);
+      expect(ownBal).to.equal(totalToken);
+    });
+
+    it("Should Fail If Ico Not started", async () => {
+      const icoInfo = await ico.getICOinfo();
+
+      const currDate = 2;
+      const icoStart = icoInfo.startTime; //it's 1 now
+      expect(currDate).to.greaterThan(icoStart);
+      // s=1677138264   c=1677138263
+    });
+
+    // it("Should Check If Ico Owner received Payment", async () => {
+    // const own = await icoInfo.owner;
+    // const ownBal=await ethers.provider.getBalance(own);
+    // console.log(convert_wei(ownBal));
+
+    // });
   });
 });
