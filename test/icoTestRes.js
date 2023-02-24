@@ -35,3 +35,45 @@ it("Should be Owner of Ico", async () => {
   //       expect(priceToken_Out.toNumber()).to.equal(priceToken);
   //     });
   //   });
+
+
+  it("Should Revert if Fee Not Paid", async () => {
+    await ico.connect(addr1).Invest({ value: Invamount });
+    // const a=0;
+    // if(a==0){
+    //   // throw new Error('Fees not paid');
+    //   expect(ico.Invest()).to.be.revertedWith('reverted Fees not paid ')
+    // }
+    //  expect(ico.Invest()).to.be.revertedWith('the string that is the second argument to the require statement in. your solidity code');
+   
+    
+    // expect(a).to.greaterThan(0).revertedWith('Fees Not paid');
+    
+  });
+
+    // it("Should Check If Ico Owner received Payment", async () => {
+    // const own = await icoInfo.owner;
+    // const ownBal=await ethers.provider.getBalance(own);
+    // console.log(convert_wei(ownBal));
+
+    // });
+
+
+      // it("Should Check If Owner received the Payment of Tokens", async () => {
+    //   // Checking the token are received by Investor
+    //   const icoInfo = await ico.getICOinfo();
+
+    //   const own = await icoInfo.owner;
+    //   const ownBal = await ethers.provider.getBalance(own);
+    //   console.log(`ownBal:${convert_wei(ownBal)}`);
+
+    //   const priceTokens=icoInfo.priceToken;
+    //   // const totalToken=(Invamount / priceTokens) * 10 **18;
+    //   let total=ownBal.add(Invamount);
+    //   console.log(`Invamount :${total}`);
+
+    //   // expect(ownBal).to.increase(totalToken);
+    //   // expect(convert_wei(ownBal)).to.equal(convert_wei(totalToken));
+
+    // });
+

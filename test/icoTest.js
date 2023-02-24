@@ -10,6 +10,7 @@ describe("ICO", function () {
   let token;
   let owner;
   let addr1;
+  let icoInfo;
 
   beforeEach(async function () {
     [owner, addr1] = await ethers.getSigners();
@@ -29,8 +30,11 @@ describe("ICO", function () {
     await ico.deployed();
 
     await token.approve(ico.address, wei_convert(10000));
+    icoInfo = await ico.getICOinfo();
   });
+  
 
+  // ICO.sol
   describe("Test to check if the contract is deployed successfully:", async function () {
     it("should deploy the ICO contract", async function () {
       const symbol = await token.symbol();
@@ -44,8 +48,6 @@ describe("ICO", function () {
   });
   describe("Test to check if the contract is deployed successfully:", async function () {
     it("Deploy the ICO contract with valid parameters and check if it is successfully deployed.", async function () {
-      const icoInfo = await ico.getICOinfo();
-
       const owneraddress = await icoInfo.owner;
       const startTime_Out = await icoInfo.startTime;
       const endTime_Out = await icoInfo.endTime;
@@ -60,7 +62,7 @@ describe("ICO", function () {
 
   describe("Test to check if the addToken function works as expected", () => {
     it("Should be Owner of Ico", async () => {
-      const icoInfo = await ico.getICOinfo();
+      // const icoInfo = await ico.getICOinfo();
       expect(icoInfo.owner).to.equal(owner.address);
     });
 
@@ -92,49 +94,48 @@ describe("ICO", function () {
 
   // Invest()
   describe("Test to check if the invest function works as expected", () => {
-    let CurrBalance, Invamount;
+    let CurrBalance, Invamount, icoInfo, priceTokens;
+
     beforeEach(async () => {
       await ico.addToken(wei_convert(100));
       Invamount = wei_convert(0.1);
-      console.log(`Invamount:${Invamount}`);
+      // Invamount = wei_convert(0);
       const tokeninvest = await ico.connect(addr1).Invest({ value: Invamount });
       CurrBalance = await token.balanceOf(ico.address);
+      icoInfo = await ico.getICOinfo();
+      priceTokens = icoInfo.priceToken;
     });
 
     it("Should Invest Some ether and Check Receive Tokens", async () => {
       expect(CurrBalance).to.equal(wei_convert(90));
     });
-    it("Should receive the tokens", async () => {
+    it("Should Check If Investor received the tokens", async () => {
       // Checking the token are received by Investor
-      const icoInfo = await ico.getICOinfo();
+      const Investor = await addr1.address;
+      const InvBal = await token.balanceOf(Investor);
 
-      const own = await addr1.address;
-      const ownBal = await token.balanceOf(own);
-      console.log(`ownBal:${ownBal}`);
+      const totalToken = (Invamount / priceTokens) * 10 ** 18;
 
-      const priceTokens=icoInfo.priceToken;
-      const totalToken=(Invamount / priceTokens) * 10 **18;
-      console.log(`totalToken:${totalToken}`);
-
-      // Pending Changes
-      expect((ownBal).toString()).to.equal((totalToken).toString());
-
+      expect(InvBal.toString()).to.equal(totalToken.toString());
     });
-
     it("Should Fail If Ico Not started", async () => {
-      const icoInfo = await ico.getICOinfo();
-
       const currDate = 2;
       const icoStart = icoInfo.startTime; //it's 1 now
       expect(currDate).to.greaterThan(icoStart);
       // s=1677138264   c=1677138263
     });
 
-    // it("Should Check If Ico Owner received Payment", async () => {
-    // const own = await icoInfo.owner;
-    // const ownBal=await ethers.provider.getBalance(own);
-    // console.log(convert_wei(ownBal));
+    it("Should Revert if Fee Not Paid", async () => {
+      const TestAmount = 0;
+      try {
+        const Testinvest = await ico
+          .connect(addr1)
+          .Invest({ value: wei_convert(TestAmount) });
+      } catch (error) {
+        console.log("Transaction reverted:", error.message);
+      }
+    });
 
-    // });
+    //.............................
   });
 });
