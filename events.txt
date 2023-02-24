@@ -1,0 +1,31 @@
+events: [
+    {
+      transactionIndex: 0,
+      blockNumber: 3,
+      transactionHash: '0xd3a3d8409d66a34cba33b0fd110400f07b2a31c8cf10be8a3f284ef9d5bd854a', 
+      address: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+      topics: [Array],
+      data: '0x000000000000000000000000cafac3dd18ac6c6e92c921884f9e4176737c052c0000000000000000000000000000000000000000000000000000000000000001',
+      logIndex: 0,
+      blockHash: '0x89611e728dd835c2154b79ecf16732582f65e5a1187a9bbea134bf9b72df06ae',       
+      args: [Array],
+      decode: [Function (anonymous)],
+      event: 'CreateICO',
+      eventSignature: 'CreateICO(address,uint256)',
+      removeListener: [Function (anonymous)],
+      getBlock: [Function (anonymous)],
+      getTransaction: [Function (anonymous)],
+      getTransactionReceipt: [Function (anonymous)]
+    }
+  ]
+
+
+  //CreateICO ico create event log
+
+  "event": "CreateICO",
+		"args": {
+			"0": "0xD3e2008b4Da2cD6DEAF73471590fF30C86778A48",
+			"1": "1",
+			"icoAddress": "0xD3e2008b4Da2cD6DEAF73471590fF30C86778A48",
+			"icoNumber": "1"
+		}

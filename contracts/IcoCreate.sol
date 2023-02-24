@@ -4,17 +4,16 @@ pragma solidity ^0.8.0;
 import "./ICO.sol";
 
 contract IcoCreate {
+    uint256 public counter;
+    mapping(uint256 => address) public icoAddress;
 
-    uint256 counter;
-    mapping(uint256 => address) icoAddress;
-    
-    event CreateICO(
-        address icoAddress, 
-        uint256 icoNumber
-    );
+    // function getICOAddress() internal view returns (mapping(uint256 => address) storage) {
+    //     return icoAddress;
+    // }
 
+    event CreateICO(address icoAddress, uint256 icoNumber);
 
-    function deploy_ico( 
+    function deploy_ico(
         address _token,
         uint256 startTime,
         uint256 endTime,

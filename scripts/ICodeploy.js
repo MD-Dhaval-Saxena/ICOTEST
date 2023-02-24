@@ -1,9 +1,9 @@
 const hre = require("hardhat");
 
 async function main() {
-  // const IcoCreate = await hre.ethers.getContractFactory("IcoCreate");
-  // const icoCreate = await IcoCreate.deploy();
-  // await icoCreate.deployed();
+  const IcoCreate = await hre.ethers.getContractFactory("IcoCreate");
+  const icoCreate = await IcoCreate.deploy();
+  await icoCreate.deployed();
 
   const ICO = await hre.ethers.getContractFactory("ICO");
   const ico = await ICO.deploy();
