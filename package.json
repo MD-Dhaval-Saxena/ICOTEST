@@ -9,13 +9,15 @@
   "author": "dhaval saxna",
   "license": "ISC",
   "devDependencies": {
-    "hardhat": "^2.12.7"
+    "@nomicfoundation/hardhat-toolbox": "^2.0.1",
+    "@nomiclabs/hardhat-web3": "^2.0.0",
+    "@openzeppelin/test-helpers": "^0.5.16",
+    "hardhat": "^2.12.7",
+    "web3": "^1.8.2"
   },
   "dependencies": {
     "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
-    "@nomicfoundation/hardhat-toolbox": "^2.0.1",
     "@openzeppelin/contracts": "^4.8.1",
-    "chai": "^4.3.7",
-    "solidity-coverage": "^0.8.2"
+    "ganache-cli": "^6.12.2"
   }
 }

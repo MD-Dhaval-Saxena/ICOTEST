@@ -62,7 +62,7 @@ contract ICO {
 
     function Invest() public payable returns (uint256 tokenRecived)
     {   
-        require(msg.value > 0,"fees not paid");
+        // require(msg.value > 0,"fees not paid");
         // require(icoInfo[numICO].owner != address(0), "No Ico Found");
         // require(block.timestamp >= icoInfo[numICO].startTIme,"Ico not started");
         // require(block.timestamp <= icoInfo[numICO].endTime, "Ico was Ended");
