@@ -9,7 +9,7 @@ describe("OneToken", () => {
   let token, InvAmount, tokenMint;
   let totalSupply = 20000000000000000000000000;
   beforeEach(async () => {
-    [owner, addr1, addr2,addr3] = await hre.ethers.getSigners();
+    [owner, addr1, addr2,addr3,addr4] = await hre.ethers.getSigners();
     const Token = await ethers.getContractFactory("Onetoken");
     token = await Token.deploy();
     await token.deployed();
@@ -86,20 +86,20 @@ describe("OneToken", () => {
       it("should Not charge to  exempted accounts", async () => {
         await token.AddExemptedAcc(addr1.address);
         await token.connect(addr1).transfer(addr2.address, wei_convert(1));
-
-        const balanceAcc = await token.balanceOf(addr2.address);
-        // expect(convert_wei(balanceAcc)).to.equal(amount);
+        // amount=amount;
+        // const balanceAcc = await token.balanceOf(addr2.address);
+        // expect(balanceAcc).to.equal(amount);
         // console.log(`balanceAcc:${balanceAcc}`);
         // console.log(`amount:${convert_wei (amount)}`);
       });
 
       it("should  charge to  Non-exempted accounts", async () => {
-        await token.connect(addr3).transfer(addr2.address, wei_convert(1));
+        await token.connect(addr3).mint({ value: invAm });
+        await token.connect(addr3).transfer(addr4.address, amount);
         amount -= amount / taxPer;
-        const balanceAcc = await token.balanceOf(addr2.address);
-        // expect(convert_wei(balanceAcc)).to.equal(amount);
-        // console.log(`balanceAcc:${balanceAcc}`);
-        // console.log(`amount:${convert_wei (amount)}`);
+        const balanceAcc = await token.balanceOf(addr4.address);
+        expect(BigInt(balanceAcc)).to.equal(BigInt (amount));
+     
       });
     });
   });
