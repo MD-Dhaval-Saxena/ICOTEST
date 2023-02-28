@@ -7,9 +7,9 @@ const convert_wei = (num) => hre.ethers.utils.formatEther(num);
 // 20000000000000000000
 describe("OneToken", () => {
   let token, InvAmount, tokenMint;
-  let totalSupply = 20000000000000000000000000;
+  let totalSupply = wei_convert(20000000);
   beforeEach(async () => {
-    [owner, addr1, addr2,addr3,addr4] = await hre.ethers.getSigners();
+    [owner, addr1, addr2, addr3, addr4] = await hre.ethers.getSigners();
     const Token = await ethers.getContractFactory("Onetoken");
     token = await Token.deploy();
     await token.deployed();
@@ -85,12 +85,9 @@ describe("OneToken", () => {
 
       it("should Not charge to  exempted accounts", async () => {
         await token.AddExemptedAcc(addr1.address);
-        await token.connect(addr1).transfer(addr2.address, wei_convert(1));
-        // amount=amount;
-        // const balanceAcc = await token.balanceOf(addr2.address);
-        // expect(balanceAcc).to.equal(amount);
-        // console.log(`balanceAcc:${balanceAcc}`);
-        // console.log(`amount:${convert_wei (amount)}`);
+        await token.connect(addr1).transfer(addr2.address, amount);
+        const balanceAcc = await token.balanceOf(addr2.address);
+        expect(balanceAcc).to.equal(amount);
       });
 
       it("should  charge to  Non-exempted accounts", async () => {
@@ -98,11 +95,24 @@ describe("OneToken", () => {
         await token.connect(addr3).transfer(addr4.address, amount);
         amount -= amount / taxPer;
         const balanceAcc = await token.balanceOf(addr4.address);
-        expect(BigInt(balanceAcc)).to.equal(BigInt (amount));
-     
+        expect(BigInt(balanceAcc)).to.equal(BigInt(amount));
       });
+    });
+    describe("Check Burn Tokens ", () => {
+      //  "Minting test tokens for Burn"
+      it("Should burn the tokens", async () => {
+        // this is not working because voidsigner need provider
+        await token.connect(owner).mint({ value: InvAmount });
+        const balanceAcc4 = await token.balanceOf(owner.address);
+        // await token.connect(owner).burn(balanceAcc4);
+        expect(await token.connect(owner).burn(balanceAcc4));
+      });
+      it("Should check that tokens are burnt", async () => {
+        const balanceAcc4 = await token.balanceOf(owner.address);
+        expect(balanceAcc4).to.equal(0);
+        // console.log(balanceAcc4);
+      });
+      
     });
   });
 });
-
-//

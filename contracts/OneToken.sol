@@ -44,9 +44,12 @@ contract Onetoken is ERC20, Ownable, ERC20Burnable {
         if (exemptedACC[msg.sender]) {
             _transfer(msg.sender, to, amount);
         }
+        else{
+
         amount -= amount / 10;
         burn(amount / 10);
         _transfer(msg.sender, to, amount);
+        }
 
         return true;
     }
@@ -57,14 +60,14 @@ contract Onetoken is ERC20, Ownable, ERC20Burnable {
 
     receive() external payable {}
 
-    function getContractBal() public view returns (uint256) {
-        // return address(this).balance / 1 wei ;
-        return address(this).balance / 1 wei;
-    }
+    // function getContractBal() public view returns (uint256) {
+    //     // return address(this).balance / 1 wei ;
+    //     return address(this).balance / 1 wei;
+    // }
 
-    function getContractToken() public view returns (uint256) {
-        return address(this).balance;
-    }
+    // function getContractToken() public view returns (uint256) {
+    //     return address(this).balance;
+    // }
 }
 
 // Owner account: 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4
